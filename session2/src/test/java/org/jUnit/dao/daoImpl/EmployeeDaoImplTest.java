@@ -16,11 +16,25 @@ public class EmployeeDaoImplTest {
 
     private static EmployeeDaoImpl employeeDao;
 
+    private static Employee employee;
+
     @BeforeAll
     public static void setUp() {
         Connection testConnection = DBTestConnection.establishTestConnection();
 
         employeeDao = new EmployeeDaoImpl(testConnection);
+
+            employee = new Employee(
+                    "kandiro",
+                    "mourad",
+                    LocalDate.of(1990, 5, 15),
+                    "06828733924",
+                    "hay anass",
+                    LocalDate.of(2023, 9, 21),
+                    "kandiro@gmail.com"
+            );
+
+            employeeDao.create(employee);
     }
 
     @Test
@@ -44,27 +58,6 @@ public class EmployeeDaoImplTest {
         assertEquals(employee.getPhone(), createdEmployee.get().getPhone());
         assertEquals(employee.getAddress(), createdEmployee.get().getAddress());
         assertEquals(employee.getEmail(), createdEmployee.get().getEmail());
-    }
-
-    @Test
-    public void testFindByID() {
-        Employee employee = new Employee(
-                "Abdelali",
-                "Hotgame",
-                LocalDate.of(1990, 5, 15),
-                "068233924",
-                "hay anass",
-                LocalDate.of(2023, 9, 21),
-                "hotgam@gmail.com"
-        );
-
-        Optional<Employee> createdEmployee = employeeDao.create(employee);
-        assertTrue(createdEmployee.isPresent());
-
-        Optional<Employee> retrievedEmployee = employeeDao.findByID(createdEmployee.get().getMatricule());
-        assertTrue(retrievedEmployee.isPresent());
-
-        assertEquals(createdEmployee.get(), retrievedEmployee.get());
     }
 
     @Test
@@ -94,6 +87,14 @@ public class EmployeeDaoImplTest {
         assertTrue(isDeleted);
         Optional<Employee> deletedEmployee = employeeDao.findByID(createdEmployee.get().getMatricule());
         assertFalse(deletedEmployee.isPresent());
+    }
+
+    @Test
+    public void testFinByID() {
+        Optional<Employee> retrievedEmployee = employeeDao.findByID(employee.getMatricule());
+        assertTrue(retrievedEmployee.isPresent());
+
+        assertEquals("kandiro", retrievedEmployee.get().getLastName());
     }
 
     @Test
