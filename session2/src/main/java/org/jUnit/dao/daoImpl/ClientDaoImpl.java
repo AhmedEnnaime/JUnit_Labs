@@ -71,7 +71,7 @@ public class ClientDaoImpl implements ClientDao {
                     client.setBirthDate(resultSet.getDate("birthDate").toLocalDate());
                     client.setPhone(resultSet.getString("phone"));
                     client.setAddress(resultSet.getString("address"));
-                    client.setEmployee(new EmployeeDaoImpl().findByID(resultSet.getInt("employeematricule")).get());
+//                    client.setEmployee(new EmployeeDaoImpl().findByID(resultSet.getInt("employeematricule")).get());
 
                     return Optional.of(client);
                 } else {
